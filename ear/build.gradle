@@ -1,0 +1,24 @@
+apply plugin: 'ear'
+//apply plugin: 'java'
+
+repositories { mavenCentral() }
+
+dependencies {
+    //following dependencies will become the ear modules and placed in the ear root
+    deploy project(path:':war', configuration:'archives')
+    deploy project(path:':ejb')
+
+    //following dependencies will become ear libs and placed in a dir configured via libDirName property
+    earlib group: 'log4j', name: 'log4j', version: '1.2.15', ext: 'jar'
+}
+
+ear {
+    deploymentDescriptor {  // custom entries for application.xml:
+        applicationName = "customear"
+        initializeInOrder = true
+        displayName = "Custom Ear"  // defaults to project.name
+        description = "My customized EAR for the Gradle documentation"  // defaults to project.description
+	webModule("war.war", "/hello")
+	module("ejb.jar", "ejb")
+    }
+}

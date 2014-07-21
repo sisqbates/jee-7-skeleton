@@ -1,0 +1,27 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'eclipse'
+
+
+repositories {
+   mavenCentral()
+}
+
+dependencies {
+	providedCompile "javax:javaee-web-api:7.0"
+	providedCompile project(path: ':ejb')
+}
+
+war {
+	extension "war"
+}
+
+eclipse {
+	classpath {
+		file {
+			beforeMerged { classpath ->
+				classpath.entries += new org.gradle.plugins.ide.eclipse.model.SourceFolder("src/main/webapp", null)
+			}
+		}
+	}
+}
